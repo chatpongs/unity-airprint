@@ -54,24 +54,28 @@ extern "C"
     
     void _print()
     {
-        NSMutableString *printBody = [NSMutableString stringWithFormat:@"Test"];
-        [printBody appendFormat:@"\n\n\n\nPrinted From *myapp*"];
+        NSMutableString *printBody = [NSMutableString stringWithFormat:@"\n\nChatpong Suteesuksataporn"];
+        //[printBody appendFormat:@"\n\n\n\nPrinted From *myapp*"];
         
         UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
         //pic.delegate = UnityGetGLViewController();
         
         UIPrintInfo *printInfo = [UIPrintInfo printInfo];
         printInfo.outputType = UIPrintInfoOutputGeneral;
+        printInfo.orientation = UIPrintInfoOrientationLandscape;
         //printInfo.jobName = self.titleLabel.text;
         pic.printInfo = printInfo;
         
         UISimpleTextPrintFormatter *textFormatter = [[UISimpleTextPrintFormatter alloc] initWithText:printBody];
         textFormatter.startPage = 0;
-        textFormatter.contentInsets = UIEdgeInsetsMake(72.0, 72.0, 72.0, 72.0); // 1 inch margins
-        textFormatter.maximumContentWidth = 6 * 72.0;
+        textFormatter.font=[UIFont fontWithName:@"Arail Bold" size:72];
+        //textFormatter.contentInsets = UIEdgeInsetsMake(12.0, 12.0, 12.0, 12.0); // 1 inch margins
+        //textFormatter.maximumContentWidth = 6 * 72.0;
+        textFormatter.textAlignment = NSTextAlignmentCenter;
         pic.printFormatter = textFormatter;
+        
         //[textFormatter release];
-        pic.showsPageRange = YES;
+        //pic.showsPageRange = YES;
         
         void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
         ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
@@ -79,7 +83,6 @@ extern "C"
                 NSLog(@"Printing could not complete because of error: %@", error);
             }
         };
-        printf("Printing");
         
         [pic presentFromRect:CGRectMake(0, UnityGetGLView().frame.size.height - 22 * 2, UnityGetGLView().frame.size.width, 22) inView:UnityGetGLView() animated:YES completionHandler:completionHandler];
     }
